@@ -1,0 +1,3 @@
+C:/Users/loveh/CLionProjects/Tsetlin_Machine/cmake-build-debug/CMakeFiles/Tsetlin_Machine.dir
+C:/Users/loveh/CLionProjects/Tsetlin_Machine/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/loveh/CLionProjects/Tsetlin_Machine/cmake-build-debug/CMakeFiles/rebuild_cache.dir

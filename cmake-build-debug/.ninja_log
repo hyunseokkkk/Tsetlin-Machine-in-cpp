@@ -1,0 +1,14 @@
+# ninja log v5
+43	416	7601947572565607	CMakeFiles/Tsetlin_Machine.dir/MultiClassTsetlin.cpp.obj	c9817e3670c33fb3
+75	1365	7601940971259617	CMakeFiles/Tsetlin_Machine.dir/Clause.cpp.obj	12cd2f1b924e51e2
+63	1197	7601940969555779	CMakeFiles/Tsetlin_Machine.dir/TsetlinAutomata.cpp.obj	dd6003437c1f0574
+26	791	7601947576315559	CMakeFiles/Tsetlin_Machine.dir/main.cpp.obj	d2074e6e673c6442
+35	850	7601947576921593	CMakeFiles/Tsetlin_Machine.dir/TsetlinMachine.cpp.obj	7ea3bf4910933f59
+14	357	7602534017163012	build.ninja	c8f9aacca263db61
+850	1049	7601947578867482	Tsetlin_Machine.exe	bbbd04c329d50e56
+76	162	7602611536908251	CMakeFiles/Tsetlin_Machine.dir/MultiClassTsetlin.cpp.obj	c9817e3670c33fb3
+53	660	7602611541883772	CMakeFiles/Tsetlin_Machine.dir/main.cpp.obj	d2074e6e673c6442
+66	1057	7602611545858569	CMakeFiles/Tsetlin_Machine.dir/TsetlinMachine.cpp.obj	7ea3bf4910933f59
+1058	1419	7602611549400008	Tsetlin_Machine.exe	bbbd04c329d50e56
+19	579	7602687829939011	CMakeFiles/Tsetlin_Machine.dir/main.cpp.obj	d2074e6e673c6442
+580	829	7602687832359003	Tsetlin_Machine.exe	bbbd04c329d50e56
