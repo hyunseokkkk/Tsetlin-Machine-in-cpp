@@ -75,26 +75,13 @@ public:
         return 1.0 - static_cast<double>(errors) / num_examples;
     }
 
-    //multiple class에 대한 업데이트 진행
-    void update(const vector<unsigned int>& Xi, int target_class) {
-        // 타깃 클래스에 대해 긍정 피드백 업데이트
-        machines[target_class]->update(Xi, 1);
-
-        // 타깃 클래스와 다른 임의의 클래스 선택 (클래스 수가 2 이상이라고 가정)
-        int negative_class = rand() % (num_classes - 1);
-        if (negative_class >= target_class) {
-            negative_class++;  // target_class와 중복되지 않도록 조정
-        }
-        machines[negative_class]->update(Xi, 0);
-    }
-
     //배치 사용 시
     void fit(const vector<vector<unsigned int>>& X, const vector<int>& y, int epochs) {
         int num_examples = X.size();
         for (int epoch = 0; epoch < epochs; epoch++) {
             //데이터 셔플링
             for (int i = 0; i < num_examples; i++) {
-                update(X[i], y[i]);
+                train(X[i], y[i]);
             }
         }
     }

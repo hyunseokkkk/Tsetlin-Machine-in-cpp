@@ -1,0 +1,3 @@
+C:/Users/loveh/CLionProjects/Tsetlin_Machine/build/CMakeFiles/Tsetlin_Machine.dir
+C:/Users/loveh/CLionProjects/Tsetlin_Machine/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/loveh/CLionProjects/Tsetlin_Machine/build/CMakeFiles/ZERO_CHECK.dir

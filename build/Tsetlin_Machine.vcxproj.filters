@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\loveh\CLionProjects\Tsetlin_Machine\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\loveh\CLionProjects\Tsetlin_Machine\TsetlinMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\loveh\CLionProjects\Tsetlin_Machine\MultiClassTsetlin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\loveh\CLionProjects\Tsetlin_Machine\TsetlinMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\loveh\CLionProjects\Tsetlin_Machine\MultiClassTsetlin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\loveh\CLionProjects\Tsetlin_Machine\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4CE4AE77-0E16-3263-95AC-0C8FA6F7C5FA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{37E65055-679C-361F-8AE9-D1B85A62D05E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

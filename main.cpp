@@ -21,7 +21,7 @@ const int INT_SIZE = 32;            // 32비트 unsigned int 사용
 const int LA_CHUNKS = (2 * FEATURES + INT_SIZE - 1) / INT_SIZE;
 
 // 한 예제의 픽셀 데이터를 읽어, 2*FEATURES 길이의 비트벡터(vector<unsigned int>)로 패킹하는 함수
-vector<unsigned int> packExample(const vector<int>& sample) {
+vector<unsigned int> packExample(const vector<int> &sample) {
     vector<unsigned int> result(LA_CHUNKS, 0);//0으로 초기화, 784 * 2 만큼
     for (int j = 0; j < FEATURES; j++) {
         if (sample[j] == 1) {
@@ -42,7 +42,7 @@ vector<unsigned int> packExample(const vector<int>& sample) {
 
 
 // 각 줄은 "b0 b1 ... b783 label" 형태
-void readData(const string& filename ,vector<vector<unsigned int>>& X ,vector<int>& y ,int numExamples) {
+void readData(const string &filename, vector<vector<unsigned int>> &X, vector<int> &y, int numExamples) {
 
     ifstream inFile(filename);
     if (!inFile) {
@@ -75,7 +75,7 @@ void readData(const string& filename ,vector<vector<unsigned int>>& X ,vector<in
     inFile.close();
 }
 
-void printDigit(const vector<unsigned int>& Xi) {
+void printDigit(const vector<unsigned int> &Xi) {
     for (int row = 0; row < 28; row++) {
         for (int col = 0; col < 28; col++) {
             int index = row * 28 + col;
@@ -118,7 +118,7 @@ int main() {
     double s = 3.9;       // 업데이트 확률 조절 파라미터 (예시)
     MultipleClassTsetlin mc_tm(numClasses, clauses, threshold, s);
 
-    constexpr int EPOCHS = 5;
+    constexpr int EPOCHS = 100;
     for (int epoch = 0; epoch < EPOCHS; epoch++) {
         cout << "\nEpoch " << (epoch + 1) << "\n";
 

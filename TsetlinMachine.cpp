@@ -9,8 +9,7 @@ using namespace std;
 
 // 생성자: 절의 수, 투표 임계값, s 파라미터를 받아 내부 벡터들을 초기화합니다.
 TsetlinMachine::TsetlinMachine(int clauses, int threshold, double s)
-        : clauses(clauses), threshold(threshold), s(s)
-{
+        : clauses(clauses), threshold(threshold), s(s) {
     // INT_SIZE, FEATURES 등은 상수로 정의됨
     la_chunks = (NUM_LITERALS + INT_SIZE - 1) / INT_SIZE; // 예: (2*784)/32
     clause_chunks = (clauses + INT_SIZE - 1) / INT_SIZE;
@@ -33,12 +32,8 @@ TsetlinMachine::TsetlinMachine(int clauses, int threshold, double s)
     feedback_to_clauses.assign(clause_chunks, 0);
 
     // 랜덤 seed 초기화
-    srand((unsigned)time(0));
+    srand((unsigned) time(0));
 }
-
-
-// 내부: ta_state 등은 이미 생성자에서 초기화하였으므로 별도 initialize()는 생략할 수 있음.
-
 
 // 내부: 피드백용 random stream 초기화
 //  – 모든 피드백 비트를 0으로 초기화한 후, 2*FEATURES 중 약 1/S 비트를 활성화합니다.
@@ -112,7 +107,7 @@ void TsetlinMachine::calculate_clause_output(const vector<unsigned int>& Xi, boo
         clause_output[i] = 0;
     }
 
-    // 마지막 청크에 사용할 필터: 마지막 청크에 유효한 비트 수
+    // 마지막 청크에 사용할 필터: 마지막 청크에 유효한 비트 수(32보다 작을 수 있음)
     unsigned int filter;
     int rem = NUM_LITERALS % INT_SIZE;
     if (rem == 0) filter = ~0u; else filter = ((1u << rem) - 1);
@@ -124,7 +119,13 @@ void TsetlinMachine::calculate_clause_output(const vector<unsigned int>& Xi, boo
         // k = 0 ~ la_chunks-2
         for (int k = 0; k < la_chunks - 1; k++) {
             // ta_state[j][k][STATE_BITS-1]는 automata의 결정 비트(Include 여부)
+            //j번째 clause의 k번 째 literal의 state bit
             // 절이 활성화되려면, ta_state의 결정 비트가 설정된 모든 자리에서 입력 Xi의 해당 비트가 1이어야 함.
+    /*        Clause Output이 1이 되는 조건은 다음과 같습니다:
+
+            해당 Clause에 포함(Include)된 리터럴들만 고려.
+            이 리터럴들이 입력 데이터(Xi)와 일치하면 Clause Output은 1.
+            만약 하나라도 불일치하면 Clause Output은 0 */
             if ((ta_state[j][k][STATE_BITS - 1] & Xi[k]) != ta_state[j][k][STATE_BITS - 1]) {
                 output = false;
                 break;
@@ -147,14 +148,14 @@ void TsetlinMachine::calculate_clause_output(const vector<unsigned int>& Xi, boo
 
         // 절 j의 출력이 true이면, clause_output의 해당 비트를 1로 설정
         if (output) {
-            int clause_chunk = j / INT_SIZE;
-            int bit_pos = j % INT_SIZE;
+            int clause_chunk = j / INT_SIZE; //몇 번째 청크
+            int bit_pos = j % INT_SIZE; //청크 내에 몇 번째 리터럴
             clause_output[clause_chunk] |= (1u << bit_pos);
         }
     }
 }
 
-// 내부: 절들의 투표를 합산하여 클래스 점수를 계산
+//절들의 투표를 합산하여 클래스 점수를 계산
 // 짝수 절은 +1, 홀수 절은 -1로 투표하며, 결과를 [-threshold, threshold] 범위로 클립함.
 int TsetlinMachine::sum_up_class_votes() {
     int class_sum = 0;
@@ -168,9 +169,9 @@ int TsetlinMachine::sum_up_class_votes() {
     return class_sum;
 }
 
-// 온라인 업데이트 함수
+
 //  – 먼저 절의 출력을 계산한 후, 전체 투표(class_sum)를 구하고,
-//    각 절에 대해 Type I / Type II 피드백을 확률적으로 적용합니다.
+//    각 절에 대해 Type I / Type II 피드백을 확률적으로 적용.
 void TsetlinMachine::update(const vector<unsigned int>& Xi, int target) {
     // UPDATE 모드로 절 출력 계산
     calculate_clause_output(Xi, false);
@@ -194,21 +195,22 @@ void TsetlinMachine::update(const vector<unsigned int>& Xi, int target) {
 
     // 각 절에 대해 피드백 적용
     for (int j = 0; j < clauses; j++) {
-        int clause_chunk = j / INT_SIZE;
-        int bit_pos = j % INT_SIZE;
+        int clause_chunk = j / INT_SIZE; //몇 번째 clause
+        int bit_pos = j % INT_SIZE; //리터럴 위치
         // 피드백이 없는 절은 건너뜀
         if (!(feedback_to_clauses[clause_chunk] & (1u << bit_pos)))
             continue;
 
-        // 절의 극성: 짝수 절은 positive, 홀수 절은 negative
+        // clause polarity: 짝수 절은 positive, 홀수 절은 negative
         // (2*target-1) * (1-2*(j&1)) == -1 → Type II, == 1 → Type I
-        int polarity = (1 - 2 * (j & 1)); // 짝수: 1, 홀수: -1
+        int polarity = (1 - 2 * (j & 1)); // 짝수: 1, 홀수: -1, 최하위 비트를 보고 짝수, 홀수 판별
         if ((2 * target - 1) * polarity == -1) {
             // Type II 피드백: 절이 활성화되었을 때,
             // 각 청크에 대해, 입력 Xi의 0인 자리와 automata의 Include 비트(~ta_state[..][STATE_BITS-1])에 대해 inc
             int out_chunk = j / INT_SIZE;
-            if (clause_output[out_chunk] & (1u << (j % INT_SIZE))) {
+            if (clause_output[out_chunk] & (1u << (j % INT_SIZE))) {//literal이 1이라면
                 for (int k = 0; k < la_chunks; k++) {
+                    //둘을 AND한 결과는 입력에서도 0이고, 현재 자동자도 Include 상태(결정 비트 1)가 아닌 리터럴들의 위치를 나타냄.
                     unsigned int active = (~Xi[k]) & ~(ta_state[j][k][STATE_BITS - 1]);
                     inc(j, k, active);
                 }
